@@ -2479,11 +2479,13 @@ public class DefaultCodegen implements CodegenConfig {
      * @return type
      */
     private String getPrimitiveType(Schema schema) {
+        LOGGER.warn("Schema: {}", schema);
         if (schema == null) {
             throw new RuntimeException("schema cannot be null in getPrimitiveType");
         } else if (typeMapping.containsKey(schema.getType() + "+" + schema.getFormat())) {
             // allows custom type_format mapping.
             // use {type}+{format}
+            LOGGER.warn("breakpoint 2");
             return typeMapping.get(schema.getType() + "+" + schema.getFormat());
         } else if (ModelUtils.isNullType(schema)) {
             // The 'null' type is allowed in OAS 3.1 and above. It is not supported by OAS 3.0.x,
@@ -2525,6 +2527,7 @@ public class DefaultCodegen implements CodegenConfig {
             } else if (ModelUtils.isShortSchema(schema)) {// int32
                 return "integer";
             } else {
+                LOGGER.warn("breakpoint 1");
                 return schema.getType(); // integer
             }
         } else if (ModelUtils.isMapSchema(schema)) {
@@ -3962,7 +3965,7 @@ public class DefaultCodegen implements CodegenConfig {
             LOGGER.error("Undefined property/schema for `{}`. Default to type:string.", name);
             return null;
         }
-        LOGGER.debug("debugging fromProperty for {} : {}", name, p);
+        LOGGER.warn("debugging fromProperty for {} : {}", name, p);
         NamedSchema ns = new NamedSchema(name, p, required, schemaIsFromAdditionalProperties);
         CodegenProperty cpc = schemaCodegenPropertyCache.get(ns);
         if (cpc != null) {

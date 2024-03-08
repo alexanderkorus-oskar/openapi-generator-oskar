@@ -1,1 +1,11 @@
 {{#bodyParam}}_bodyData=jsonEncode({{{paramName}}});{{/bodyParam}}
+{{#formParams}}
+        final _contentType = contentType;
+        _bodyData = FormData.fromMap({
+            '{{paramName}}': MultipartFile.fromBytes(
+                {{paramName}},
+                filename: fileName,
+                contentType: _contentType != null ? MediaType.parse(_contentType) : null,
+            ),
+        });
+{{/formParams}}

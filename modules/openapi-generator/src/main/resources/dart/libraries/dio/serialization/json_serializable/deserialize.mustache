@@ -39,6 +39,11 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
         default:
           RegExpMatch? match;
 
+          if (value is List<int> && targetType == "List<int>") {
+            return value as ReturnType;
+          }
+
+
           if (value is List && (match = _regList.firstMatch(targetType)) != null) {
             targetType = match![1]!; // ignore: parameter_assignments
             return value

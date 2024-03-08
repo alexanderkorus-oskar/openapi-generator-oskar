@@ -153,8 +153,8 @@ public abstract class AbstractDartCodegen extends DefaultCodegen {
         typeMapping.put("Date", "DateTime");
         typeMapping.put("date", "DateTime");
         typeMapping.put("DateTime", "DateTime");
-        typeMapping.put("file", "MultipartFile");
-        typeMapping.put("binary", "MultipartFile");
+        typeMapping.put("file", "List<int>");
+        typeMapping.put("binary", "List<int>");
         typeMapping.put("UUID", "String");
         typeMapping.put("URI", "String");
         typeMapping.put("ByteArray", "String");
@@ -172,7 +172,8 @@ public abstract class AbstractDartCodegen extends DefaultCodegen {
                 "Set",
                 "Map",
                 "DateTime",
-                "Object"
+                "Object",
+                "List<int>"
         );
 
         imports.put("String", "dart:core");
@@ -185,6 +186,7 @@ public abstract class AbstractDartCodegen extends DefaultCodegen {
         imports.put("Map", "dart:core");
         imports.put("DateTime", "dart:core");
         imports.put("Object", "dart:core");
+        imports.put("List<int>", "dart:core");
         imports.put("MultipartFile", "package:http/http.dart");
 
         addOption(PUB_LIBRARY, "Library name in generated code", pubLibrary);
