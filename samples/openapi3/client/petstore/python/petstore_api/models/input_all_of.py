@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
 from petstore_api.models.tag import Tag
 from typing import Optional, Set
@@ -31,11 +31,11 @@ class InputAllOf(BaseModel):
     additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["some_data"]
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    model_config = ConfigDict(
+        populate_by_name=True,
+        validate_assignment=True,
+        protected_namespaces=(),
+    )
 
 
     def to_str(self) -> str:
@@ -75,9 +75,9 @@ class InputAllOf(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each value in some_data (dict)
         _field_dict = {}
         if self.some_data:
-            for _key in self.some_data:
-                if self.some_data[_key]:
-                    _field_dict[_key] = self.some_data[_key].to_dict()
+            for _key_some_data in self.some_data:
+                if self.some_data[_key_some_data]:
+                    _field_dict[_key_some_data] = self.some_data[_key_some_data].to_dict()
             _dict['some_data'] = _field_dict
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
