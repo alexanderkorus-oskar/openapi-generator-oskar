@@ -1,6 +1,5 @@
 /**
  * OpenAPI Petstore
- * This is a sample server Petstore server. For this sample, you can use the api key `special-key` to test the authorization filters.
  *
  * 
  *
@@ -28,12 +27,12 @@ export interface Pet {
     status?: Pet.StatusEnum;
 }
 export namespace Pet {
-    export type StatusEnum = 'available' | 'pending' | 'sold';
     export const StatusEnum = {
-        Available: 'available' as StatusEnum,
-        Pending: 'pending' as StatusEnum,
-        Sold: 'sold' as StatusEnum
-    };
+        Available: 'available',
+        Pending: 'pending',
+        Sold: 'sold'
+    } as const;
+    export type StatusEnum = typeof StatusEnum[keyof typeof StatusEnum];
 }
 
 

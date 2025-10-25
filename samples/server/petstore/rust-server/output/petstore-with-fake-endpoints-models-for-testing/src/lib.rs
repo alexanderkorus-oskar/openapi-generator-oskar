@@ -325,10 +325,6 @@ pub enum UpdateUserResponse {
 #[async_trait]
 #[allow(clippy::too_many_arguments, clippy::ptr_arg)]
 pub trait Api<C: Send + Sync> {
-    fn poll_ready(&self, _cx: &mut Context) -> Poll<Result<(), Box<dyn Error + Send + Sync + 'static>>> {
-        Poll::Ready(Ok(()))
-    }
-
     /// To test special tags
     async fn test_special_tags(
         &self,
@@ -397,13 +393,13 @@ pub trait Api<C: Send + Sync> {
     /// To test enum parameters
     async fn test_enum_parameters(
         &self,
-        enum_header_string_array: Option<&Vec<String>>,
-        enum_header_string: Option<String>,
-        enum_query_string_array: Option<&Vec<String>>,
-        enum_query_string: Option<String>,
-        enum_query_integer: Option<i32>,
-        enum_query_double: Option<f64>,
-        enum_form_string: Option<String>,
+        enum_header_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_header_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_query_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_integer: Option<models::TestEnumParametersEnumQueryIntegerParameter>,
+        enum_query_double: Option<models::TestEnumParametersEnumQueryDoubleParameter>,
+        enum_form_string: Option<models::TestEnumParametersRequestEnumFormString>,
         context: &C) -> Result<TestEnumParametersResponse, ApiError>;
 
     /// test inline additionalProperties
@@ -439,7 +435,7 @@ pub trait Api<C: Send + Sync> {
     /// Finds Pets by status
     async fn find_pets_by_status(
         &self,
-        status: &Vec<String>,
+        status: &Vec<models::FindPetsByStatusStatusParameterInner>,
         context: &C) -> Result<FindPetsByStatusResponse, ApiError>;
 
     /// Finds Pets by tags
@@ -562,8 +558,6 @@ pub trait Api<C: Send + Sync> {
 #[allow(clippy::too_many_arguments, clippy::ptr_arg)]
 pub trait ApiNoContext<C: Send + Sync> {
 
-    fn poll_ready(&self, _cx: &mut Context) -> Poll<Result<(), Box<dyn Error + Send + Sync + 'static>>>;
-
     fn context(&self) -> &C;
 
     /// To test special tags
@@ -634,13 +628,13 @@ pub trait ApiNoContext<C: Send + Sync> {
     /// To test enum parameters
     async fn test_enum_parameters(
         &self,
-        enum_header_string_array: Option<&Vec<String>>,
-        enum_header_string: Option<String>,
-        enum_query_string_array: Option<&Vec<String>>,
-        enum_query_string: Option<String>,
-        enum_query_integer: Option<i32>,
-        enum_query_double: Option<f64>,
-        enum_form_string: Option<String>,
+        enum_header_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_header_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_query_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_integer: Option<models::TestEnumParametersEnumQueryIntegerParameter>,
+        enum_query_double: Option<models::TestEnumParametersEnumQueryDoubleParameter>,
+        enum_form_string: Option<models::TestEnumParametersRequestEnumFormString>,
         ) -> Result<TestEnumParametersResponse, ApiError>;
 
     /// test inline additionalProperties
@@ -676,7 +670,7 @@ pub trait ApiNoContext<C: Send + Sync> {
     /// Finds Pets by status
     async fn find_pets_by_status(
         &self,
-        status: &Vec<String>,
+        status: &Vec<models::FindPetsByStatusStatusParameterInner>,
         ) -> Result<FindPetsByStatusResponse, ApiError>;
 
     /// Finds Pets by tags
@@ -809,10 +803,6 @@ impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ContextWrapperExt<C> for T
 
 #[async_trait]
 impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ApiNoContext<C> for ContextWrapper<T, C> {
-    fn poll_ready(&self, cx: &mut Context) -> Poll<Result<(), ServiceError>> {
-        self.api().poll_ready(cx)
-    }
-
     fn context(&self) -> &C {
         ContextWrapper::context(self)
     }
@@ -925,13 +915,13 @@ impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ApiNoContext<C> for Contex
     /// To test enum parameters
     async fn test_enum_parameters(
         &self,
-        enum_header_string_array: Option<&Vec<String>>,
-        enum_header_string: Option<String>,
-        enum_query_string_array: Option<&Vec<String>>,
-        enum_query_string: Option<String>,
-        enum_query_integer: Option<i32>,
-        enum_query_double: Option<f64>,
-        enum_form_string: Option<String>,
+        enum_header_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_header_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_string_array: Option<&Vec<models::TestEnumParametersEnumHeaderStringArrayParameterInner>>,
+        enum_query_string: Option<models::TestEnumParametersEnumHeaderStringParameter>,
+        enum_query_integer: Option<models::TestEnumParametersEnumQueryIntegerParameter>,
+        enum_query_double: Option<models::TestEnumParametersEnumQueryDoubleParameter>,
+        enum_form_string: Option<models::TestEnumParametersRequestEnumFormString>,
         ) -> Result<TestEnumParametersResponse, ApiError>
     {
         let context = self.context().clone();
@@ -991,7 +981,7 @@ impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ApiNoContext<C> for Contex
     /// Finds Pets by status
     async fn find_pets_by_status(
         &self,
-        status: &Vec<String>,
+        status: &Vec<models::FindPetsByStatusStatusParameterInner>,
         ) -> Result<FindPetsByStatusResponse, ApiError>
     {
         let context = self.context().clone();
